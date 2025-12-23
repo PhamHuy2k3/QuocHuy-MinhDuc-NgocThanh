@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
-from .models import Destination, Hotel, Blog
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Destination, Hotel, Blog, UserProfile
+from .forms import UserUpdateForm, ProfileUpdateForm
 
 def index(request):
     return render(request, 'index.html')
@@ -46,3 +49,36 @@ def register(request):
             
     context = {'form': form}
     return render(request, 'register.html', context)
+
+@login_required
+def profile(request):
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        profile = UserProfile.objects.create(user=request.user)
+    return render(request, 'profile.html')
+
+@login_required
+def profile_edit(request):
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        profile = UserProfile.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'profile_edit.html', context)

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block hero %}
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_1.jpg' %}');">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+            <div class="col-md-9 ftco-animate pb-5 text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home <i class="fa fa-chevron-right"></i></a></span> <span>Profile <i class="fa fa-chevron-right"></i></span></p>
+                <h1 class="mb-0 bread">User Profile</h1>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Profile Information</h3>
+                        <a href="{% url 'profile_edit' %}" class="btn btn-secondary">Edit Profile</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3 text-center">
+                            <div class="col-12">
+                                {% if user.userprofile.image %}
+                                <img src="{{ user.userprofile.image.url }}" class="rounded-circle" width="150" height="150" style="object-fit: cover;">
+                                {% else %}
+                                <img src="https://via.placeholder.com/150" class="rounded-circle" width="150" height="150" style="object-fit: cover;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 font-weight-bold">Username:</div>
+                            <div class="col-md-8">{{ user.username }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 font-weight-bold">Email:</div>
+                            <div class="col-md-8">{{ user.email|default:"Not provided" }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 font-weight-bold">Phone:</div>
+                            <div class="col-md-8">{{ user.userprofile.phone|default:"Not provided" }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 font-weight-bold">Address:</div>
+                            <div class="col-md-8">{{ user.userprofile.address|default:"Not provided" }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 font-weight-bold">Date Joined:</div>
+                            <div class="col-md-8">{{ user.date_joined|date:"F d, Y" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
