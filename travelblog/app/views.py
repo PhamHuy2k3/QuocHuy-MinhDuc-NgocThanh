@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
-from .models import Destination, Hotel
+from .models import Destination, Hotel, Blog
 
 def index(request):
     return render(request, 'index.html')
@@ -13,7 +13,12 @@ def contact(request):
     return render(request, 'contact.html')
 
 def blog(request):
-    return render(request, 'blog.html')
+    blogs = Blog.objects.all().order_by('-created_at')
+    return render(request, 'blog.html', {'blogs': blogs})
+
+def blog_detail(request, blog_id):
+    blog = get_object_or_404(Blog, pk=blog_id)
+    return render(request, 'blog_detail.html', {'blog': blog})
 
 def hotel(request):
     hotels = Hotel.objects.all()
