@@ -85,68 +85,40 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row">
+            {% for dest in destinations %}
             <div class="col-md-4 ftco-animate">
                 <div class="project-wrap">
-                    <a href="#" class="img" style="background-image: url('{% static 'images/destination-1.jpg' %}');">
-                        <span class="price">$550/person</span>
+                    <a href="{% url 'destination_detail' dest.id %}" class="img" style="background-image: url('{{ dest.image.url }}');">
+                        <span class="price">${{ dest.price }}/person</span>
                     </a>
                     <div class="text p-4">
-                        <span class="days">8 Days Tour</span>
-                        <h3><a href="#">Banaue Rice Terraces</a></h3>
-                        <p class="location"><span class="fa fa-map-marker"></span> Banaue, Ifugao, Philippines</p>
+                        <span class="days">{{ dest.duration }}</span>
+                        <h3><a href="{% url 'destination_detail' dest.id %}">{{ dest.name }}</a></h3>
+                        <p class="location"><span class="fa fa-map-marker"></span> {{ dest.location }}</p>
                         <ul>
-                            <li><span class="flaticon-shower"></span>2</li>
-                            <li><span class="flaticon-king-size"></span>3</li>
-                            <li><span class="flaticon-mountains"></span>Near Mountain</li>
+                            <li><span class="flaticon-shower"></span>{{ dest.bath_count }}</li>
+                            <li><span class="flaticon-king-size"></span>{{ dest.bed_count }}</li>
+                            <li><span class="flaticon-mountains"></span>{{ dest.amenity }}</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="project-wrap">
-                    <a href="#" class="img" style="background-image: url('{% static 'images/destination-2.jpg' %}');">
-                        <span class="price">$550/person</span>
-                    </a>
-                    <div class="text p-4">
-                        <span class="days">10 Days Tour</span>
-                        <h3><a href="#">Banaue Rice Terraces</a></h3>
-                        <p class="location"><span class="fa fa-map-marker"></span> Banaue, Ifugao, Philippines</p>
-                        <ul>
-                            <li><span class="flaticon-shower"></span>2</li>
-                            <li><span class="flaticon-king-size"></span>3</li>
-                            <li><span class="flaticon-sun-umbrella"></span>Near Beach</li>
-                        </ul>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-md-12 text-center">
+                <p>No destinations found.</p>
             </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="project-wrap">
-                    <a href="#" class="img" style="background-image: url('{% static 'images/destination-3.jpg' %}');">
-                        <span class="price">$550/person</span>
-                    </a>
-                    <div class="text p-4">
-                        <span class="days">7 Days Tour</span>
-                        <h3><a href="#">Banaue Rice Terraces</a></h3>
-                        <p class="location"><span class="fa fa-map-marker"></span> Banaue, Ifugao, Philippines</p>
-                        <ul>
-                            <li><span class="flaticon-shower"></span>2</li>
-                            <li><span class="flaticon-king-size"></span>3</li>
-                            <li><span class="flaticon-sun-umbrella"></span>Near Beach</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
 
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-<li><a href="#"><</a></li>
+                        <li><a href="#"><</a></li>
                         <li class="active"><span>1</span></li>
                         <li><a href="#">2</a></li>
                         <li><a href="#">3</a></li>
-<li><a href="#">></a></li>
+                        <li><a href="#">></a></li>
                     </ul>
                 </div>
             </div>

@@ -10,6 +10,7 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('hotel/', views.hotel, name='hotel'),
     path('destination/', views.destination, name='destination'),
+    path('destination/<int:destination_id>/', views.destination_detail, name='destination_detail'),
     
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
