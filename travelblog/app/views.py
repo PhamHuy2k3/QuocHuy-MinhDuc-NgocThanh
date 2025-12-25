@@ -141,3 +141,33 @@ def book(request, model_type, id):
         form = BookingForm()
 
     return render(request, 'booking_form.html', {'form': form, 'object': content_object})
+
+@login_required
+def booking_edit(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if booking.user != request.user:
+        return redirect('profile')
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Booking updated successfully!')
+            return redirect('profile')
+    else:
+        form = BookingForm(instance=booking)
+
+    return render(request, 'booking_update.html', {'form': form, 'booking': booking})
+
+@login_required
+def booking_delete(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if booking.user != request.user:
+        return redirect('profile')
+
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, 'Booking deleted successfully!')
+        return redirect('profile')
+
+    return render(request, 'booking_confirm_delete.html', {'booking': booking})

@@ -73,6 +73,10 @@
                                 </div>
                                 <p class="mb-1">Start Date: {{ booking.start_date|date:"F d, Y" }} {% if booking.end_date %} - End Date: {{ booking.end_date|date:"F d, Y" }} {% endif %}</p>
                                 <small>People: {{ booking.num_people }} | Status: {{ booking.status }}</small>
+                                <div class="mt-2">
+                                    <a href="{% url 'booking_edit' booking.id %}" class="btn btn-sm btn-info">Edit</a>
+                                    <a href="{% url 'booking_delete' booking.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>

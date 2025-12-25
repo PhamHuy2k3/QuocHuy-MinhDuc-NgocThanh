@@ -20,4 +20,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('book/<str:model_type>/<int:id>/', views.book, name='book'),
+    path('booking/edit/<int:booking_id>/', views.booking_edit, name='booking_edit'),
+    path('booking/delete/<int:booking_id>/', views.booking_delete, name='booking_delete'),
 ]
