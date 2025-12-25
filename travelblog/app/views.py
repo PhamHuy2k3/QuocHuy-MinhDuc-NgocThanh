@@ -4,8 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Destination, Hotel, Blog, UserProfile
-from .forms import UserUpdateForm, ProfileUpdateForm
+from django.contrib.contenttypes.models import ContentType
+from .models import Destination, Hotel, Blog, UserProfile, Booking
+from .forms import UserUpdateForm, ProfileUpdateForm, BookingForm
 
 def index(request):
     return render(request, 'index.html')
@@ -42,7 +43,7 @@ def hotel(request):
         except ValueError:
             pass
             
-    return render(request, 'hotel.html', {'hotels': hotels})-1
+    return render(request, 'hotel.html', {'hotels': hotels})
 
 def hotel_detail(request, hotel_id):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
@@ -89,7 +90,9 @@ def profile(request):
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         profile = UserProfile.objects.create(user=request.user)
-    return render(request, 'profile.html')
+    
+    bookings = Booking.objects.filter(user=request.user).order_by('-booking_date')
+    return render(request, 'profile.html', {'bookings': bookings})
 
 @login_required
 def profile_edit(request):
@@ -115,3 +118,26 @@ def profile_edit(request):
         'p_form': p_form
     }
     return render(request, 'profile_edit.html', context)
+
+@login_required
+def book(request, model_type, id):
+    if model_type == 'destination':
+        content_object = get_object_or_404(Destination, pk=id)
+    elif model_type == 'hotel':
+        content_object = get_object_or_404(Hotel, pk=id)
+    else:
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.content_object = content_object
+            booking.save()
+            messages.success(request, 'Booking successful!')
+            return render(request, 'booking_success.html', {'booking': booking})
+    else:
+        form = BookingForm()
+
+    return render(request, 'booking_form.html', {'form': form, 'object': content_object})

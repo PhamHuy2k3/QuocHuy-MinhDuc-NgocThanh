@@ -19,4 +19,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('book/<str:model_type>/<int:id>/', views.book, name='book'),
 ]

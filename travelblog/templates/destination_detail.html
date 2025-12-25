@@ -24,6 +24,7 @@
                 <p><strong>Location:</strong> {{ destination.location }}</p>
                 <p><strong>Price:</strong> ${{ destination.price }}/person</p>
                 <p><strong>Duration:</strong> {{ destination.duration }}</p>
+                <p><a href="{% url 'book' 'destination' destination.id %}" class="btn btn-primary">Book Now</a></p>
                 
                 <div class="row mb-4">
                     <div class="col-md-12">

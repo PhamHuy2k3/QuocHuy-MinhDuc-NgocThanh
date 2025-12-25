@@ -29,6 +29,7 @@
                 <p><strong>Location:</strong> {{ hotel.location }}</p>
                 <p><strong>Price:</strong> ${{ hotel.price }}/{{ hotel.price_unit }}</p>
                 <p><strong>Duration:</strong> {{ hotel.duration }}</p>
+                <p><a href="{% url 'book' 'hotel' hotel.id %}" class="btn btn-primary">Book Now</a></p>
                 
                 <div class="row mb-4">
                     <div class="col-md-12">
