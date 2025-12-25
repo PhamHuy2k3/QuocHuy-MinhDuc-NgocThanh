@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .models import Destination, Hotel, Blog, UserProfile
 from .forms import UserUpdateForm, ProfileUpdateForm
 
@@ -33,6 +34,22 @@ def hotel_detail(request, hotel_id):
 
 def destination(request):
     destinations = Destination.objects.all()
+    
+    place = request.GET.get('place')
+    price_limit = request.GET.get('price_limit')
+    
+    if place:
+        destinations = destinations.filter(
+            Q(name__icontains=place) | Q(location__icontains=place)
+        )
+    
+    if price_limit:
+        try:
+            price_limit = int(price_limit)
+            destinations = destinations.filter(price__lte=price_limit)
+        except ValueError:
+            pass
+            
     return render(request, 'destination.html', {'destinations': destinations})
 
 def destination_detail(request, destination_id):
