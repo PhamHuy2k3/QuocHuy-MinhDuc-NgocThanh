@@ -227,3 +227,59 @@ def hotel_delete(request, pk):
         messages.success(request, 'Hotel deleted successfully.')
         return redirect('hotel_list_manage')
     return render(request, 'confirm_delete.html', {'object': hotel, 'type': 'Hotel'})
+
+
+@login_required
+def book(request, content_type, object_id):
+    try:
+        ct = ContentType.objects.get(model=content_type)
+    except ContentType.DoesNotExist:
+        messages.error(request, 'Invalid booking type.')
+        return redirect('index')
+    model_class = ct.model_class()
+    obj = get_object_or_404(model_class, pk=object_id)
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.content_type = ct
+            booking.object_id = object_id
+            booking.save()
+            messages.success(request, 'Booking successful.')
+            return redirect('booking_success', booking_id=booking.id)
+    else:
+        form = BookingForm()
+
+    return render(request, 'booking_form.html', {'form': form, 'object': obj})
+
+
+@login_required
+def booking_success(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id, user=request.user)
+    return render(request, 'booking_success.html', {'booking': booking})
+
+
+@login_required
+def booking_edit(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = BookingForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Booking updated successfully.')
+            return redirect('profile')
+    else:
+        form = BookingForm(instance=booking)
+    return render(request, 'booking_update.html', {'form': form, 'booking': booking})
+
+
+@login_required
+def booking_delete(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, 'Booking deleted successfully.')
+        return redirect('profile')
+    return render(request, 'booking_confirm_delete.html', {'booking': booking})
