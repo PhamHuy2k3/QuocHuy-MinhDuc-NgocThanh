@@ -155,7 +155,7 @@ def destination_add(request):
             return redirect('destination_list_manage')
     else:
         form = DestinationForm()
-    return render(request, 'destination_form.html', {'form': form, 'title': 'Add Destination'})
+    return render(request, 'add_destination.html', {'form': form})
 
 @login_required
 @staff_required
@@ -169,7 +169,7 @@ def destination_edit(request, pk):
             return redirect('destination_list_manage')
     else:
         form = DestinationForm(instance=dest)
-    return render(request, 'destination_form.html', {'form': form, 'title': 'Edit Destination'})
+    return render(request, 'edit_destination.html', {'form': form, 'destination': dest})
 
 @login_required
 @staff_required
@@ -199,7 +199,7 @@ def hotel_add(request):
             return redirect('hotel_list_manage')
     else:
         form = HotelForm()
-    return render(request, 'hotel_form.html', {'form': form, 'title': 'Add Hotel'})
+    return render(request, 'add_hotel.html', {'form': form})
 
 @login_required
 @staff_required
@@ -213,7 +213,7 @@ def hotel_edit(request, pk):
             return redirect('hotel_list_manage')
     else:
         form = HotelForm(instance=hotel)
-    return render(request, 'hotel_form.html', {'form': form, 'title': 'Edit Hotel'})
+    return render(request, 'edit_hotel.html', {'form': form, 'hotel': hotel})
 
 @login_required
 @staff_required

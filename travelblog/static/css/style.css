@@ -392,6 +392,29 @@ mark,
   max-width: 100%;
   height: auto; }
 
+/* Manage page styles */
+.btn-orange {
+  background: #ff6b35 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: .35rem .7rem !important;
+}
+.btn-orange:hover { background: #ff7b50 !important; color: #fff !important; }
+
+.btn-navy, .btn.btn-navy {
+  background: #081a2d !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: .35rem .6rem !important;
+}
+.btn-navy:hover { background: #061423 !important; color: #fff !important; }
+.btn-navy:focus, .btn-navy:active { outline: none !important; box-shadow: none !important; }
+
+.table th { font-weight: 700; }
+.text-left { text-align: left !important; }
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;

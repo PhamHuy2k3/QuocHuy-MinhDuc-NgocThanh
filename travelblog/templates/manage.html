@@ -1,90 +1,88 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block hero %}
-<div class="hero-wrap js-fullheight" style='background-image: url("{% static 'images/bg_5.jpg' %}");'>
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_1.jpg' %}');">
     <div class="overlay"></div>
     <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center" data-scrollax-parent="true">
-            <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home</a></span><span>Manage</span></p>
-                <h1 class="mb-4">Admin Manage</h1>
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+            <div class="col-md-9 ftco-animate pb-5 text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home <i class="fa fa-chevron-right"></i></a></span> <span>Manage <i class="fa fa-chevron-right"></i></span></p>
+                <h1 class="mb-0 bread">Admin Manage</h1>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block content %}
-<style>
-.btn-orange { background: #ff6b35 !important; color: #fff !important; border: none !important; }
-.btn-navy { background: #081a2d !important; color: #fff !important; border: none !important; }
-.table th { font-weight: 700; }
-</style>
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-                <h3 class="mr-3">Destinations</h3>
-                <a href="{% url 'destination_add' %}" class="btn btn-orange btn-sm">Add</a>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h3>Destinations <a href="{% url 'destination_add' %}" class="btn btn-primary btn-sm">Add</a></h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dest in destinations %}
+                        <tr>
+                            <td>{{ dest.name }}</td>
+                            <td>{{ dest.location }}</td>
+                            <td>${{ dest.price }}</td>
+                            <td>
+                                <a href="{% url 'destination_edit' dest.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                                <form method="post" action="{% url 'destination_delete' dest.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Delete this destination?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4">No destinations found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for d in destinations %}
-                    <tr class="bg-light">
-                        <td>{{ d.name }}</td>
-                        <td>{{ d.location }}</td>
-                        <td>${{ d.price|floatformat:2 }}</td>
-                        <td>
-                            <a href="{% url 'destination_edit' d.pk %}" class="btn btn-navy btn-sm">Edit</a>
-                            <a href="{% url 'destination_delete' d.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="4">No destinations</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-                <h3 class="mr-3">Hotels</h3>
-                <a href="{% url 'hotel_add' %}" class="btn btn-orange btn-sm">Add</a>
+
+            <div class="col-md-6">
+                <h3>Hotels <a href="{% url 'hotel_add' %}" class="btn btn-primary btn-sm">Add</a></h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hotel in hotels %}
+                        <tr>
+                            <td>{{ hotel.name }}</td>
+                            <td>{{ hotel.location }}</td>
+                            <td>${{ hotel.price }}</td>
+                            <td>
+                                <a href="{% url 'hotel_edit' hotel.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                                <form method="post" action="{% url 'hotel_delete' hotel.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Delete this hotel?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4">No hotels found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for h in hotels %}
-                    <tr class="bg-light">
-                        <td>{{ h.name }}</td>
-                        <td>{{ h.location }}</td>
-                        <td>${{ h.price|floatformat:2 }}</td>
-                        <td>
-                            <a href="{% url 'hotel_edit' h.pk %}" class="btn btn-navy btn-sm">Edit</a>
-                            <a href="{% url 'hotel_delete' h.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="4">No hotels</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
