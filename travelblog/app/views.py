@@ -4,8 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Destination, Hotel, Blog, UserProfile
-from .forms import UserUpdateForm, ProfileUpdateForm
+from django.contrib.contenttypes.models import ContentType
+from .models import Destination, Hotel, Blog, UserProfile, Booking
+from .forms import UserUpdateForm, ProfileUpdateForm, BookingForm
 
 def index(request):
     return render(request, 'index.html')
@@ -89,7 +90,9 @@ def profile(request):
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         profile = UserProfile.objects.create(user=request.user)
-    return render(request, 'profile.html')
+    
+    bookings = Booking.objects.filter(user=request.user).order_by('-booking_date')
+    return render(request, 'profile.html', {'bookings': bookings})
 
 @login_required
 def profile_edit(request):

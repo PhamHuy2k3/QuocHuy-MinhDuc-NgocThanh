@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class Destination(models.Model):
     name = models.CharField(max_length=200)
@@ -49,3 +51,18 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    
+    booking_date = models.DateTimeField(auto_now_add=True)
+    num_people = models.PositiveIntegerField(default=1)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=20, default='Pending')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.content_object}"
