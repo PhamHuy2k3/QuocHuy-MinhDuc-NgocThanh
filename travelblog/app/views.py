@@ -26,6 +26,22 @@ def blog_detail(request, blog_id):
 
 def hotel(request):
     hotels = Hotel.objects.all()
+    
+    place = request.GET.get('place')
+    price_limit = request.GET.get('price_limit')
+    
+    if place:
+        hotels = hotels.filter(
+            Q(name__icontains=place) | Q(location__icontains=place)
+        )
+    
+    if price_limit:
+        try:
+            price_limit = int(price_limit)
+            hotels = hotels.filter(price__lte=price_limit)
+        except ValueError:
+            pass
+            
     return render(request, 'hotel.html', {'hotels': hotels})
 
 def hotel_detail(request, hotel_id):
