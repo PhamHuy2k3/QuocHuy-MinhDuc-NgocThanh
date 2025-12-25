@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Hotels <a href="{% url 'hotel_add' %}" class="btn btn-orange btn-sm float-right">Add New</a></h2>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in hotels %}
+            <tr>
+                <td>{{ h.name }}</td>
+                <td>{{ h.location }}</td>
+                <td>{{ h.price }}</td>
+                <td>
+                    <a href="{% url 'hotel_edit' h.pk %}" class="btn btn-sm btn-navy">Edit</a>
+                    <a href="{% url 'hotel_delete' h.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No hotels</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

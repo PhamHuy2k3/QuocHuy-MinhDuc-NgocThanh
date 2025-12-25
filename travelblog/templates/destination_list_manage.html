@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Destinations <a href="{% url 'destination_add' %}" class="btn btn-orange btn-sm float-right">Add New</a></h2>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in destinations %}
+            <tr>
+                <td>{{ d.name }}</td>
+                <td>{{ d.location }}</td>
+                <td>{{ d.price }}</td>
+                <td>
+                    <a href="{% url 'destination_edit' d.pk %}" class="btn btn-sm btn-navy">Edit</a>
+                    <a href="{% url 'destination_delete' d.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No destinations</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

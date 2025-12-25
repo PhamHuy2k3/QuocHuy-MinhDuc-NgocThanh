@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block hero %}
+<div class="hero-wrap js-fullheight" style='background-image: url("{% static 'images/bg_5.jpg' %}");'>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center" data-scrollax-parent="true">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home</a></span><span>Manage</span></p>
+                <h1 class="mb-4">Admin Manage</h1>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+.btn-orange { background: #ff6b35 !important; color: #fff !important; border: none !important; }
+.btn-navy { background: #081a2d !important; color: #fff !important; border: none !important; }
+.table th { font-weight: 700; }
+</style>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="mr-3">Destinations</h3>
+                <a href="{% url 'destination_add' %}" class="btn btn-orange btn-sm">Add</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in destinations %}
+                    <tr class="bg-light">
+                        <td>{{ d.name }}</td>
+                        <td>{{ d.location }}</td>
+                        <td>${{ d.price|floatformat:2 }}</td>
+                        <td>
+                            <a href="{% url 'destination_edit' d.pk %}" class="btn btn-navy btn-sm">Edit</a>
+                            <a href="{% url 'destination_delete' d.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No destinations</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="mr-3">Hotels</h3>
+                <a href="{% url 'hotel_add' %}" class="btn btn-orange btn-sm">Add</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for h in hotels %}
+                    <tr class="bg-light">
+                        <td>{{ h.name }}</td>
+                        <td>{{ h.location }}</td>
+                        <td>${{ h.price|floatformat:2 }}</td>
+                        <td>
+                            <a href="{% url 'hotel_edit' h.pk %}" class="btn btn-navy btn-sm">Edit</a>
+                            <a href="{% url 'hotel_delete' h.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No hotels</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -19,4 +19,19 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
+
+    # Admin manage pages
+    path('manage/', views.manage, name='manage'),
+
+    # Destination CRUD
+    path('manage/destinations/', views.destination_list_manage, name='destination_list_manage'),
+    path('manage/destinations/add/', views.destination_add, name='destination_add'),
+    path('manage/destinations/<int:pk>/edit/', views.destination_edit, name='destination_edit'),
+    path('manage/destinations/<int:pk>/delete/', views.destination_delete, name='destination_delete'),
+
+    # Hotel CRUD
+    path('manage/hotels/', views.hotel_list_manage, name='hotel_list_manage'),
+    path('manage/hotels/add/', views.hotel_add, name='hotel_add'),
+    path('manage/hotels/<int:pk>/edit/', views.hotel_edit, name='hotel_edit'),
+    path('manage/hotels/<int:pk>/delete/', views.hotel_delete, name='hotel_delete'),
 ]

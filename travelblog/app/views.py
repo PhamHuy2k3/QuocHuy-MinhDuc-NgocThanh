@@ -115,3 +115,112 @@ def profile_edit(request):
         'p_form': p_form
     }
     return render(request, 'profile_edit.html', context)
+
+
+# --- Admin manage views ---
+from .forms import DestinationForm, HotelForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+def staff_required(view_func):
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_staff:
+            messages.error(request, 'Bạn không có quyền truy cập trang này.')
+            return redirect('index')
+        return view_func(request, *args, **kwargs)
+    return _wrapped
+
+@login_required
+@staff_required
+def manage(request):
+    destinations = Destination.objects.all()
+    hotels = Hotel.objects.all()
+    return render(request, 'manage.html', {'destinations': destinations, 'hotels': hotels})
+
+# Destination CRUD
+@login_required
+@staff_required
+def destination_list_manage(request):
+    destinations = Destination.objects.all()
+    return render(request, 'destination_list_manage.html', {'destinations': destinations})
+
+@login_required
+@staff_required
+def destination_add(request):
+    if request.method == 'POST':
+        form = DestinationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Destination added successfully.')
+            return redirect('destination_list_manage')
+    else:
+        form = DestinationForm()
+    return render(request, 'destination_form.html', {'form': form, 'title': 'Add Destination'})
+
+@login_required
+@staff_required
+def destination_edit(request, pk):
+    dest = get_object_or_404(Destination, pk=pk)
+    if request.method == 'POST':
+        form = DestinationForm(request.POST, request.FILES, instance=dest)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Destination updated successfully.')
+            return redirect('destination_list_manage')
+    else:
+        form = DestinationForm(instance=dest)
+    return render(request, 'destination_form.html', {'form': form, 'title': 'Edit Destination'})
+
+@login_required
+@staff_required
+def destination_delete(request, pk):
+    dest = get_object_or_404(Destination, pk=pk)
+    if request.method == 'POST':
+        dest.delete()
+        messages.success(request, 'Destination deleted successfully.')
+        return redirect('destination_list_manage')
+    return render(request, 'confirm_delete.html', {'object': dest, 'type': 'Destination'})
+
+# Hotel CRUD
+@login_required
+@staff_required
+def hotel_list_manage(request):
+    hotels = Hotel.objects.all()
+    return render(request, 'hotel_list_manage.html', {'hotels': hotels})
+
+@login_required
+@staff_required
+def hotel_add(request):
+    if request.method == 'POST':
+        form = HotelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Hotel added successfully.')
+            return redirect('hotel_list_manage')
+    else:
+        form = HotelForm()
+    return render(request, 'hotel_form.html', {'form': form, 'title': 'Add Hotel'})
+
+@login_required
+@staff_required
+def hotel_edit(request, pk):
+    hotel = get_object_or_404(Hotel, pk=pk)
+    if request.method == 'POST':
+        form = HotelForm(request.POST, request.FILES, instance=hotel)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Hotel updated successfully.')
+            return redirect('hotel_list_manage')
+    else:
+        form = HotelForm(instance=hotel)
+    return render(request, 'hotel_form.html', {'form': form, 'title': 'Edit Hotel'})
+
+@login_required
+@staff_required
+def hotel_delete(request, pk):
+    hotel = get_object_or_404(Hotel, pk=pk)
+    if request.method == 'POST':
+        hotel.delete()
+        messages.success(request, 'Hotel deleted successfully.')
+        return redirect('hotel_list_manage')
+    return render(request, 'confirm_delete.html', {'object': hotel, 'type': 'Hotel'})
