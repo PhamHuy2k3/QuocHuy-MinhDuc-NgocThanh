@@ -42,7 +42,7 @@ def hotel(request):
         except ValueError:
             pass
             
-    return render(request, 'hotel.html', {'hotels': hotels})
+    return render(request, 'hotel.html', {'hotels': hotels})-1
 
 def hotel_detail(request, hotel_id):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
