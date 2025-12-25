@@ -2,7 +2,12 @@
 {% load static %}
 
 {% block hero %}
-<section class="hero-wrap hero-wrap-2 js-fullheight" style='background-image: url("{% static 'images/bg_1.jpg' %}");'>
+<style>
+    .hotel-hero-bg {
+        background-image: url("{% static 'images/bg_1.jpg' %}");
+    }
+</style>
+<section class="hero-wrap hero-wrap-2 js-fullheight hotel-hero-bg">
   <div class="overlay"></div>
   <div class="container">
     <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
